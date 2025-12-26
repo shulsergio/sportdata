@@ -18,13 +18,9 @@
 }
 
 .main {
-  display: flex;
   min-height: 100vh;
   width: 100%;
   max-width: 1280px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
   background-color: var(--foreground);
   padding: 40px 40px;
 }
@@ -34,7 +30,7 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  /* gap: 24px; */
+  padding-bottom: 20px;
 }
 
 .intro h1 {
