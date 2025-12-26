@@ -9,19 +9,21 @@ export async function askGemini(prompt: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{ parts: [{ text: prompt }] }],
+
+        tools: [{ google_search: {} }] 
       })
     });
+
     const data = await response.json();
-    
+
     if (!response.ok) {
-      console.error("Google API Error:", data.error?.message);
-      return ` ${data.error?.message || "Неизвестная ошибка"}`;
+      console.error("Детали ошибки:", data);
+      return `error: ${data.error?.message || "Неизвестно"}`;
     }
 
     return data.candidates[0].content.parts[0].text;
   } catch (e) {
-    console.error("Network Error:", e);
-    return "Сетевая ошибка: " + (e as Error).message;
+    return "error: " + (e as Error).message;
   }
 }
