@@ -11,13 +11,13 @@ export async function handleSearch(formData: FormData) {
 
 export async function chatAction(formData: FormData) {
   const message = formData.get("message") as string;
-  
+  // console.log('', message);
   if (!message) return "Пустое сообщение...";
 
   try {
     const response = await askGemini(message);
     return response;
   } catch (e) {
-    return "Ошибка связи с космосом (Gemini) : " + (e as Error).message;
+    return "Ошибка связи (Gemini): " + (e as Error).message;
   }
 }

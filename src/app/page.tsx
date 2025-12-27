@@ -1,5 +1,7 @@
 import styles from "@/styles/Home.module.css";
-import FirstChat from "@/src/components/FirstChat/FirstChat";
+// import FirstChat from "@/src/components/FirstChat/FirstChat";
+// import ButtonBox from "../components/ButtonBox/ButtonBox";
+import ResultsTable from "../components/ResultsTable/ResultsTable";
 
 export default function Home() {
   return (
@@ -9,7 +11,8 @@ export default function Home() {
           <h1>Get started.</h1>
         </div>
         <div className={styles.ctas}>
-          <FirstChat />
+          {/* <FirstChat /> */}
+          <ResultsTable />
         </div>
       </main>
     </div>

@@ -1,0 +1,6 @@
+.ButtonBox{
+padding: 8px 12px;
+background-color: var(--button-background);
+border-radius: 6px;
+display: inline-flex;    
+}
