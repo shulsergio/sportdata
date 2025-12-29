@@ -39,15 +39,13 @@ return data.candidates[0].content.parts[0].text;
 
 //--------------------------
 //--------------------------
-//--------------------------
-//--------------------------
-
+ 
 /**
  * Service to fetch and store the complete tournament standings for all groups (A through L).
  * This service focuses on retrieving high-fidelity data via Google Search grounding.
  */
 
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 export interface TeamStats {
   rank: number;
@@ -78,23 +76,21 @@ export const updateTournamentStandings = async (): Promise<GroupStandings[]> => 
   `;
  try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash", // Рекомендую 2.0-flash для стабильности, пока 2.5 в глубокой бете
+      model: "gemini-2.0-flash",
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
-        // responseMimeType УДАЛЯЕМ — это решит ошибку 400
+ 
       }
     });
 
     const rawText = response.text();
-
-    // 2. Безопасная очистка текста от возможного Markdown
+ 
     const cleanJsonText = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
-
-    // 3. Парсим результат
+ 
     const data = JSON.parse(cleanJsonText);
     
     const structuredStandings: GroupStandings[] = data.allGroups;
