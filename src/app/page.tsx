@@ -1,7 +1,8 @@
 import styles from "@/styles/Home.module.css";
 // import FirstChat from "@/src/components/FirstChat/FirstChat";
 // import ButtonBox from "../components/ButtonBox/ButtonBox";
-import ResultsTable from "../components/ResultsTable/ResultsTable";
+import ResultsTable from "../components/SeriaA/SeriaA";
+import WorlCupResults from "../components/WC2026/WC2026";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <div className={styles.ctas}>
           {/* <FirstChat /> */}
           <ResultsTable />
+          <WorlCupResults />
         </div>
       </main>
     </div>
