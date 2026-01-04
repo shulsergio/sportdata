@@ -34,39 +34,12 @@
 
 //////////////////// WORK!!!!/////
 
-// const today = new Date().toLocaleDateString("ru-RU", {
-//   day: "numeric",
-//   month: "long",
-//   year: "numeric",
-// });
-// const query = `
-// TASK:
-//   Provide the current Serie A 2025/26 standings for ranks 1 to 20, add also last played matches in today's date ${today}.
-//   CROSS-REFERENCE data ONLY in official sites https://en.legaseriea.it/serie-a/standings and https://www.flashscore.com/football/italy/serie-a to ensure accuracy.
-
-// FORMAT:
-//   Strictly RAW JSON array of objects only.
-//   No markdown code blocks (NO \`\`\`json). No preamble.
-
-//   STRUCTURE EXAMPLE:
-//   [
-//     {
-//       "rank": 1,
-//       "team": "Inter",
-//       "points": 33,
-//       "game": 15,
-//       "win": 11,
-//       "draw": 0,
-//       "loss": 4
-//     }
-//   ]
-
-//   STRICT RULES:
-//   - All numeric values (rank, points, game, win, draw, loss) must be Numbers, NOT Strings.
-//   - Accuracy is top priority.
-//   - No conversational text.
-// `;
-
+const query = `
+TASK:
+Create a list of football clubs: exactly 2 clubs (not only famous clubs) for each of the following 20 countries: England, Spain, Italy, Portugal, Ukraine, Germany, Ireland, Iceland, North Macedonia, Turkey, Poland, France, Austria, Argentina, Brazil, Paraguay, Uruguay, China, Japan, Australia.
+The response must be STRICTLY in JSON format as an array of objects. Do not include any introductory text, markdown formatting, or explanations.Use English for all country and club names.
+Structure: [ { "country": "Country Name", "club": "Club Name" } ]
+`;
 //////////////////// WORK!!!!/////
 
 // const query = `
@@ -115,47 +88,45 @@
 //   "team_home", "team_away", "score_home", "score_away", "date"
 // `;
 
-// import React, { useState } from "react";
-// import css from "./WC2026.module.css";
-// import ButtonBox from "../ButtonBox/ButtonBox";
+import React, { useState } from "react";
+// import css from "./SeriaA.module.css";
+import ButtonBox from "../ButtonBox/ButtonBox";
+import { askGeminiData } from "@/src/services/gemini";
 // import { updateTournamentStandings } from "@/src/services/gemini";
 
-// interface TeamData {
-//   rank: number;
-//   team: string;
-//   points: number;
-//   game: number;
-//   win: number;
-//   draw: number;
-//   loss: number;
-// }
+interface TeamData {
+  team: string;
+  country: string;
+}
 
-// export default function WorlCupResults() {
-//   // const [teams, setTeams] = useState<TeamData[]>([]);
-//   const [isLoading, setIsLoading] = useState(false);
+export default function FootballQuiz() {
+  // const [teams, setTeams] = useState<TeamData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleGetTable = async () => {
+    setIsLoading(true);
 
-//   //   setIsLoading(true);
+    try {
+      const response = await askGeminiData(query);
+      console.log("DATA response:", response);
 
-//   const handleGetTable = async () => {
-//     setIsLoading(true);
+      const cleanJson = response.replace(/```json|```/g, "").trim();
+      const data: TeamData[] = JSON.parse(cleanJson);
+      // setTeams(data);
+      console.log("TEAMS data:", data);
+    } catch (error) {
+      console.error("Ошибка парсинга:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-//   try {
-//     const response = await updateTournamentStandings();
-//     console.log("response:", response);
-//   } catch (error) {
-//     console.error("Ошибка парсинга:", error);
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
-
-//   return (
-//     <div className={css.container}>
-//       <div className="button">
-//         <ButtonBox onClick={handleGetTable} type="button">
-//           {isLoading ? "Загрузка..." : "WC2026 table"}
-//         </ButtonBox>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    // <div className={css.container}>
+    <div className="button">
+      <ButtonBox onClick={handleGetTable} type="button">
+        {isLoading ? "Загрузка..." : "Data Clubs List"}
+      </ButtonBox>
+    </div>
+    // </div>
+  );
+}
